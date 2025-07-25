@@ -1,0 +1,30 @@
+terraform.tfvars
+# Terraform state files
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Crash logs
+crash.log
+
+# Sensitive files
+*.pem
+*.key
+*.env
+
+# Ignore build artifacts
+build/
+dist/
+node_modules/
+
+# Ignore IDE/editor files
+.vscode/
+.idea/
+.DS_Store
+
+# Logs
+*.log
+
+# Ignore AWS CLI credentials (if any)
+.aws/
