@@ -161,7 +161,7 @@ resource "aws_codepipeline" "pipeline" {
 
       configuration = {
         ConnectionArn    = aws_codestarconnections_connection.github_connection.arn
-        FullRepositoryId = "Ashminita/DevOps"
+        FullRepositoryId = "Ashminita/DevOps_Final_Project"
         BranchName       = "main"
       }
     }
