@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/myapp  # Directory on your EC2 instance
+
+hooks:
+  BeforeInstall:
+    - location: scripts/cleanup.sh
+      timeout: 300
+      runas: root
+      interpreter: ["/bin/bash"]
+  AfterInstall:
+    - location: scripts/start.sh
+      timeout: 300
+      runas: root
+      interpreter: ["/bin/bash"]
+
