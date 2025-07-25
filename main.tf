@@ -6,8 +6,8 @@ provider "aws" {
 # S3 Bucket for Artifacts
 ##############################
 resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = "my-pipeline-artifacts-bucket-1234"
-  force_destroy = true
+  bucket         = "my-pipeline-artifacts-bucket-1234"
+  force_destroy  = true
 }
 
 ##############################
@@ -25,7 +25,7 @@ resource "aws_iam_role" "codepipeline_role" {
   })
 }
 
-# Inline policy for CodePipeline role
+# Inline policy for CodePipeline role (general access)
 resource "aws_iam_role_policy" "codepipeline_policy" {
   name = "codepipeline-inline-policy"
   role = aws_iam_role.codepipeline_role.id
@@ -49,7 +49,24 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
   })
 }
 
+# Extra policy so CodePipeline can use CodeStar connection
+resource "aws_iam_role_policy" "codepipeline_codestar_policy" {
+  name = "CodePipelineCodeStarAccess"
+  role = aws_iam_role.codepipeline_role.id
 
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = [
+          "codestar-connections:UseConnection"
+        ]
+        Resource = aws_codestarconnections_connection.github_connection.arn
+      }
+    ]
+  })
+}
 
 resource "aws_iam_role" "codebuild_role" {
   name = "codebuild-role"
@@ -110,8 +127,8 @@ resource "aws_codebuild_project" "build_project" {
 # CodeDeploy Application and Group
 ##############################
 resource "aws_codedeploy_app" "app" {
-  name = "my-codedeploy-app"
-  compute_platform = "Server"
+  name              = "my-codedeploy-app"
+  compute_platform  = "Server"
 }
 
 resource "aws_codedeploy_deployment_group" "group" {
