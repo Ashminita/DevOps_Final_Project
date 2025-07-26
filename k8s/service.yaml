@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: devops-final-service
 spec:
-  type: NodePort         # Change to LoadBalancer if on cloud (EKS/GKE/AKS)
+  type: NodePort
   selector:
     app: devops-final-app
   ports:
-    - name: http
-      port: 80
-      targetPort: 3000   # <-- Forward traffic to your app port
-      nodePort: 30080    # <-- Optional, only for NodePort access
+    - port: 3000          # Service port (matches app port)
+      targetPort: 3000    # Container port
+      nodePort: 30080     # NodePort to access app externally
