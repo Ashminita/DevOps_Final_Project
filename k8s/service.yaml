@@ -7,6 +7,6 @@ spec:
   selector:
     app: devops-final-app
   ports:
-    - port: 80
-      targetPort: 80
-      nodePort: 30080
+    - port: 3000           # Cluster-wide service port
+      targetPort: 3000     # Must match the Node.js app port
+      nodePort: 30080      # Exposed port on your node (external access)

@@ -18,7 +18,7 @@ spec:
         - name: devops-final-container
           image: ashminita28/devops-final-project:latest
           ports:
-            - containerPort: 80
+            - containerPort: 3000   # Must match your app’s listen port
           resources:
             requests:
               cpu: "100m"
