@@ -14,11 +14,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # Step 2: Install tfsec for Terraform scanning
+    # Step 2: Run tfsec for Terraform scanning
     - name: Run tfsec (Terraform Security Scan)
       uses: aquasecurity/tfsec-action@v1.0.3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          working_directory: .   # <-- Replace with your Terraform folder path
+
 
     # Step 3: Build Docker image
     - name: Build Docker image
