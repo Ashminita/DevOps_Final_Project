@@ -14,12 +14,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-        # Step 2: Run tfsec for Terraform scanning (don't fail the pipeline)
+    # Step 2: Run tfsec for Terraform scanning (won’t fail the pipeline)
     - name: Run tfsec (Terraform Security Scan)
       run: |
         echo "Running tfsec scan (will not fail pipeline)..."
         tfsec . || echo "tfsec found issues but continuing..."
-
 
     # Step 3: Build Docker image
     - name: Build Docker image
@@ -52,11 +51,11 @@ jobs:
       with:
         version: v1.27.1
 
-    # Step 8: Configure kubeconfig
+    # Step 8: Configure kubeconfig (fixing JSON/YAML issue)
     - name: Set Kubeconfig
       run: |
         mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG_FILE }}" > ~/.kube/config
+        echo "${{ secrets.KUBECONFIG_FILE }}" | sed 's/\\n/\n/g' > ~/.kube/config
 
     # Step 9: Apply Sealed Secrets
     - name: Apply Sealed Secrets
