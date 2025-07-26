@@ -15,14 +15,17 @@ spec:
         app: devops-final-app
     spec:
       containers:
-        - name: devops-final-container
-          image: ashminita28/devops-final-project:latest
-          ports:
-            - containerPort: 3000   # Must match your app’s listen port
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "500m"
-              memory: "512Mi"
+      - name: devops-final-container
+        image: ashminita28/devops-final-project:latest  # <-- Your Docker Hub image
+        ports:
+          - containerPort: 3000                        # <-- Must match app's listening port
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        envFrom:
+          - secretRef:
+              name: db-credentials                      # <-- Must match SealedSecret name
