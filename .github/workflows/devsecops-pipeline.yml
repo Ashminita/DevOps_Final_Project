@@ -18,9 +18,8 @@ jobs:
     - name: Run tfsec (Terraform Security Scan)
       uses: aquasecurity/tfsec-action@v1.0.3
       with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          working_directory: .   # <-- Replace with your Terraform folder path
-
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        working_directory: .  # Root folder (adjust if Terraform files are elsewhere)
 
     # Step 3: Build Docker image
     - name: Build Docker image
@@ -35,13 +34,12 @@ jobs:
         format: table
         severity: HIGH,CRITICAL
 
-    # Step 5: Login to DockerHub (replace with your credentials)
+    # Step 5: DockerHub Login
     - name: Docker Login
       uses: docker/login-action@v2
       with:
-       username: ${{ secrets.DOCKER_USERNAME }}
-       password: ${{ secrets.DOCKER_PASSWORD }}
-
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
 
     # Step 6: Push Docker image
     - name: Push Docker image
@@ -54,7 +52,7 @@ jobs:
       with:
         version: v1.27.1
 
-    # Step 8: Configure kubeconfig (replace with your cluster secret)
+    # Step 8: Configure kubeconfig
     - name: Set Kubeconfig
       run: |
         mkdir -p ~/.kube
@@ -65,7 +63,7 @@ jobs:
       run: |
         kubectl apply -f k8s/sealed-secret.yaml
 
-    # Step 10: Deploy to Kubernetes (replace with your deployment YAML path)
+    # Step 10: Deploy Workloads
     - name: Deploy Workloads
       run: |
-        kubectl apply -f k8s/
+        kubectl apply -f k8s/deployment.yaml
