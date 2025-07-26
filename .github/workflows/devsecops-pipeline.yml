@@ -45,20 +45,14 @@ jobs:
       run: |
         docker push ashminita28/devops-final-project:latest
 
-    # Step 7: Setup kubectl
-    - name: Setup kubectl
-      uses: azure/setup-kubectl@v3
-      with:
-        version: v1.27.1
+    # Step 7: Start Minikube inside GitHub Actions
+    - name: Start Minikube
+      uses: medyagh/setup-minikube@master
 
-    # Step 8: Configure kubeconfig (fixing JSON/YAML issue)
-    - name: Set Kubeconfig
+    # Step 8: Verify Minikube cluster
+    - name: Check cluster
       run: |
-        mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG_FILE }}" | base64 -d > ~/.kube/config
-        kubectl version --client
-        kubectl get nodes || echo "Cluster not reachable yet"
-
+        kubectl get nodes
 
     # Step 9: Apply Sealed Secrets
     - name: Apply Sealed Secrets
