@@ -55,7 +55,10 @@ jobs:
     - name: Set Kubeconfig
       run: |
         mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG_FILE }}" | sed 's/\\n/\n/g' > ~/.kube/config
+        echo "${{ secrets.KUBECONFIG_FILE }}" | base64 -d > ~/.kube/config
+        kubectl version --client
+        kubectl get nodes || echo "Cluster not reachable yet"
+
 
     # Step 9: Apply Sealed Secrets
     - name: Apply Sealed Secrets
